@@ -165,6 +165,33 @@ using namespace System::Drawing;
 		return m;
 	}
 
+	int changeRows(int index, Double** matrixA, int n){
+		int row = 0;
+		Double* buffer = new Double[n+1];
+
+		for(int j = 0; j <= n;j ++){
+			buffer[j] = matrixA[index][j];
+		}
+		for(int i=index; i<n;i++){
+			if(matrixA[i][index] != 0){
+				row = i;
+				break;
+			}
+		}
+
+		if(row == 0)
+			return 0;
+
+		for(int j = 0; j<=n;j++){
+			matrixA[index][j] = matrixA[row][j];
+			matrixA[row][j] = buffer[j];
+		}
+
+		delete buffer;
+		
+		return 1;
+	}
+
 	Double** gaussElimination(Double** m,Double *b,int n){
 
 		Double** matrixA;
@@ -186,39 +213,36 @@ using namespace System::Drawing;
 			matrixA[i][n]= b[i];
 		}
 
-		Double pivo1,pivo2;
+		Double mainPivo,auxPivo;
+		int nullCollum = 0;
 		//escalonamento simples, sem zero na diagonal principal
 		for(int k = 0;k < n-1;k++){
 			for(int i = k+1;i < n;i++){
-				Double isSum = matrixA[k][k]*matrixA[i][k];
-				pivo1 = matrixA[k][k];
-				pivo2 = matrixA[i][k];
-				for(int j = 0;j <= n;j++){
-					if(pivo1*pivo2 == 0){
-						MessageBox::Show(
-						 "0 no pivo", 
-						 "Fudeu!", MessageBoxButtons::OK);
-						return NULL;
+				mainPivo = matrixA[k][k];
+				auxPivo = matrixA[i][k];
+				nullCollum = 0;
+				for(int j = k;j <= n;j++){
+					if(mainPivo == 0){
+						if(!changeRows(k,matrixA,n)){
+							nullCollum = 1;
+							break;
+						}
+						mainPivo = matrixA[k][k];
+						auxPivo = matrixA[i][k];
 					}
-					if(j == 0)
-						matrixA[i][j] = 0;
+					if(j == k)
+						matrixA[i][k] = 0;
+
+					else if(auxPivo == 0)
+						break;
+
 					else{
-						if(isSum < 0)
-							matrixA[i][j] = matrixA[k][j]*pivo2 + matrixA[i][j]*pivo1;
-						else
-							matrixA[i][j] = matrixA[k][j]*pivo2 - matrixA[i][j]*pivo1;
+						matrixA[i][j] = matrixA[k][j]*auxPivo - matrixA[i][j]*mainPivo;
 					}
 				}
+				if(nullCollum)
+					break;
 			}
-		}
-
-		for(int i =0;i < n;i ++){
-			for(int j =0;j < n;j ++){
-				this->boxElements[i,j]->Text = System::Convert::ToString(matrixA[i][j]);
-			}	
-		}
-		for(int i = 0;i < n;i ++){
-			this->boxResultElements[i]->Text = System::Convert::ToString(matrixA[i][n]);
 		}
 		return matrixA;
 	}
@@ -293,6 +317,40 @@ using namespace System::Drawing;
 
 	}
 
+	int SPIorSI(Double **matrixA, int n){
+		/*int product = 1;
+		for(int i =0;i < n;i++){
+			product*=matrixA[i][i];
+		}
+
+		if(product == 0)
+			return 1;*/
+		
+		for(int i = 1;i < n; i++){
+			if(matrixA[i][n] == 0 && matrixA[i][n-1] == 0)
+				break;
+			else if(matrixA[i][n] == 0 || matrixA[i][n-1] == 0)
+				return 2;
+		}
+			
+		int isZero;
+		for(int i=0;i<n;i++){
+			isZero = 1;
+			if(matrixA[i][i] == 0){
+				for(int j=i;j<=n;j++){
+					if(matrixA[i][j] != 0){
+						isZero = 0;
+						break;
+					}
+				}
+				if(isZero)
+					return 1;// SPI
+			}
+		}
+
+		return 0; // SPD
+	}
+
 	private: System::Void solveSystem(System::Object^  sender, System::EventArgs^  e) {
 		
 		int heightMargin = this->button2->Location.Y + this->button2->Height + 20;
@@ -302,6 +360,8 @@ using namespace System::Drawing;
 		resultElements = new Double[matrixSize];
 
 		int space = 5;
+		int st = 0;
+		Double **matrixA;
 
 		Double value;
 		for(int i = 0;i < matrixSize;i++){
@@ -316,28 +376,53 @@ using namespace System::Drawing;
 			resultElements[i] = value;
 		}
 		
-		gaussElimination(elements,resultElements,matrixSize);
+		matrixA = gaussElimination(elements,resultElements,matrixSize);
 
-		/*
-		
-		int matrixType = checkup_matrix(elements,matrixSize);
+		for(int i =0;i < matrixSize;i ++){
+			for(int j =0;j < matrixSize;j ++){
+				this->boxElements[i,j]->Text = System::Convert::ToString(matrixA[i][j]);
+			}	
+		}
+		for(int i = 0;i < matrixSize;i ++){
+			this->boxResultElements[i]->Text = System::Convert::ToString(matrixA[i][matrixSize]);
+		}
 
-		if(matrixType == 1)
-			Variable = lower_triangular_system(elements,resultElements,matrixSize);
-		else if (matrixType == 2)
-			Variable = upper_triangular_system(elements,resultElements,matrixSize);			
+		st = SPIorSI(matrixA,matrixSize);
+
+		if(st == 0){
+	
+			for(int i=0;i < matrixSize; i++){
+				for(int j=0;j < matrixSize;j++){
+					elements[i][j] = matrixA[i][j];
+				}
+				resultElements[i] = matrixA[i][matrixSize];
+			}
+
+			int matrixType = checkup_matrix(elements,matrixSize);
+
+			if(matrixType == 1)
+				Variable = lower_triangular_system(elements,resultElements,matrixSize);
+			else if (matrixType == 2)
+				Variable = upper_triangular_system(elements,resultElements,matrixSize);			
+			else
+				MessageBox::Show(
+			 "Invalid matrix!! You need to insert a triangular matrix", 
+			 "Error!", MessageBoxButtons::OK);
+			if(matrixType == 1 || matrixType == 2)
+				for(int i =0;i<matrixSize;i++){
+					labelVariable[i]->Text = System::Convert::ToString(Variable[i]);
+					labelVariable[i]->Visible = true;
+			}
+		}
+		else if(st == 2)
+			MessageBox::Show(
+			 "System SI", 
+			 "Error!", MessageBoxButtons::OK);
 		else
 			MessageBox::Show(
-         "Invalid matrix!! You need to insert a triangular matrix", 
-		 "Error!", MessageBoxButtons::OK);
-		if(matrixType == 1 || matrixType == 2)
-			for(int i =0;i<matrixSize;i++){
-				labelVariable[i]->Text = System::Convert::ToString(Variable[i]);
-				labelVariable[i]->Visible = true;
-			}
-			
-		
-		*/
+			 "System SPI", 
+			 "Error!", MessageBoxButtons::OK);
+
 	}
 
 	private: System::Void CreateMatrix(System::Object^  sender, System::EventArgs^  e) {

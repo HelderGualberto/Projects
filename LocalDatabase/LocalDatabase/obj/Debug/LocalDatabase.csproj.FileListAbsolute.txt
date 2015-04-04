@@ -1,0 +1,10 @@
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\bin\Debug\LocalDatabase.exe.config
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\bin\Debug\Database1.sdf
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\bin\Debug\LocalDatabase.exe
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\bin\Debug\LocalDatabase.pdb
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.csprojResolveAssemblyReference.cache
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.Form1.resources
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.Properties.Resources.resources
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.csproj.GenerateResource.Cache
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.exe
+c:\users\helder\documents\visual studio 2012\Projects\LocalDatabase\LocalDatabase\obj\Debug\LocalDatabase.pdb
