@@ -11,7 +11,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-	/// <summary>
+	/// <summ
 	/// Summary for MyForm
 	/// </summary>
 
@@ -25,13 +25,14 @@ using namespace System::Drawing;
 		private: System::Windows::Forms::Label^  equal;
 		private: System::Windows::Forms::Button^  button3;
 
-		private: int** elements;
+		private: Double** elements;
 		private: cli::array<TextBox^,2>^ boxElements;
 		private: cli::array<TextBox^,1>^boxResultElements;
-		private: int* resultElements;
-		private: float* unknowns;
-		private: cli::array<Label^,1>^ labelUnknowns;
-		
+		private: Double* resultElements;
+		private: Double* Variable;
+		private: cli::array<Label^,1>^ labelVariable;
+		private: System::Windows::Forms::Label^  label2;
+
 		private: int matrixSize;
 		public:
 		MyForm(void)
@@ -44,89 +45,8 @@ using namespace System::Drawing;
 			this->button2->Enabled = true;
 			this->button3->Enabled = false;
 		}
-	
-int** matrix_alloc(int n){
 
-    int i;
-    int **m =new int*[n];
-
-    for(i = 0; i < n; i++){
-        m[i] = new int;
-    }
-    return m;
-}
-
-int upper_triangular(int **m, int n){
-    int i,j;
-    //check up for a triangular superior matrix
-    for(i = 1;i < n;i ++){
-        for(j = 0;j < i-1;j++){
-            if(m[i][j] != 0)
-                return 0;
-        }
-    }
-    return 1;
-}
-
-int lower_triangular(int **m, int n){
-    int i,j;
-    for(i = 0;i < n-1;i++){
-        for(j = i+1;j < n;j ++){
-            if(m[i][j] != 0)
-                return 0;
-        }
-
-    }
-    return 1;
-}
-
-int checkup_matrix(int **m, int n){
-    int i;
-    for(i=0;i<n;i++){
-        if(!m[i][i])
-            return -1;
-    }
-
-    if(lower_triangular(m,n))
-        return 1;
-    else if(upper_triangular(m,n))
-        return 2;
-    else
-        return 0;
-}
-
-float* upper_triangular_system(int **m,int *b,int n){
-    int i,j;
-	float *x = new float[n],aux;
-
-
-    for(i = n-1;i>=0;i--){
-        aux=0;
-        for(j=i + 1;j < n;j ++){
-            aux += (float)m[i][j] * (float)x[j];
-        }
-        x[i] = (float)(b[i] - aux)/(float)m[i][i];
-    }
-    return x;
-}
-
-float * lower_triangular_system(int **m,int *b,int n){
-    int i,j;
-    float aux;
-    float *x = new float[n];
-
-    for(i=0;i<n;i++){
-        aux = 0;
-        for(j=i-1;j>=0;j--){
-            aux+= m[i][j] * x[j];
-        }
-        x[i] = (float)(b[i] - aux) / (float)m[i][i];
-    }
-    return x;
-
-}
-
-	protected:
+		protected:
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
@@ -138,23 +58,13 @@ float * lower_triangular_system(int **m,int *b,int n){
 			}
 		}
 
-
-
-	protected: 
-
-
 	private:
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		System::ComponentModel::Container ^components;
 
-#pragma region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-
-
+	#pragma region initialize components
 	void InitializeComponent(void)
 	{
 		this->button1 = (gcnew System::Windows::Forms::Button());
@@ -162,6 +72,7 @@ float * lower_triangular_system(int **m,int *b,int n){
 		this->label1 = (gcnew System::Windows::Forms::Label());
 		this->button2 = (gcnew System::Windows::Forms::Button());
 		this->button3 = (gcnew System::Windows::Forms::Button());
+		this->label2 = (gcnew System::Windows::Forms::Label());
 		(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->numericUpDown1))->BeginInit();
 		this->SuspendLayout();
 		// 
@@ -182,6 +93,7 @@ float * lower_triangular_system(int **m,int *b,int n){
 		this->numericUpDown1->Size = System::Drawing::Size(40, 20);
 		this->numericUpDown1->TabIndex = 1;
 		this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) {2, 0, 0, 0});
+		this->numericUpDown1->Click += gcnew System::EventHandler(this, &MyForm::changeDetected);
 		// 
 		// label1
 		// 
@@ -205,18 +117,28 @@ float * lower_triangular_system(int **m,int *b,int n){
 		// button3
 		// 
 		this->button3->Location = System::Drawing::Point(143, 25);
-		this->button3->Name = L"Reset";
+		this->button3->Name = L"button3";
 		this->button3->Size = System::Drawing::Size(75, 23);
 		this->button3->TabIndex = 5;
 		this->button3->Text = L"Reset";
 		this->button3->UseVisualStyleBackColor = true;
-		this->button3->Click += gcnew System::EventHandler(this, &MyForm::button3_Click);
+		this->button3->Click += gcnew System::EventHandler(this, &MyForm::resetButton);
+		// 
+		// label2
+		// 
+		this->label2->AutoSize = true;
+		this->label2->Location = System::Drawing::Point(417, 127);
+		this->label2->Name = L"label2";
+		this->label2->Size = System::Drawing::Size(35, 13);
+		this->label2->TabIndex = 6;
+		this->label2->Text = L"label2";
 		// 
 		// MyForm
 		// 
 		this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 		this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 		this->ClientSize = System::Drawing::Size(617, 427);
+		this->Controls->Add(this->label2);
 		this->Controls->Add(this->button3);
 		this->Controls->Add(this->button2);
 		this->Controls->Add(this->label1);
@@ -229,9 +151,147 @@ float * lower_triangular_system(int **m,int *b,int n){
 		this->PerformLayout();
 
 	}
+#pragma endregion
+	
+
+	Double** matrix_alloc(int n){
+
+		int i;
+		Double **m =new Double*[n];
+
+		for(i = 0; i <= n; i++){
+			m[i] = new Double;
+		}
+		return m;
+	}
+
+	Double** gaussElimination(Double** m,Double *b,int n){
+
+		Double** matrixA;
+		Double aux;
+
+		matrixA = new Double*[n];
+
+		for(int i = 0;i <= n;i++){
+			matrixA[i] = new Double;
+		}
+
+		for(int i = 0;i < n;i++){
+			for(int j = 0;j < n;j++){
+				matrixA[i][j] = m[i][j];
+			}
+		}
+	
+		for(int i = 0;i < n;i++){
+			matrixA[i][n]= b[i];
+		}
+
+		Double pivo1,pivo2;
+		//escalonamento simples, sem zero na diagonal principal
+		for(int k = 0;k < n-1;k++){
+			for(int i = k+1;i < n;i++){
+				Double isSum = matrixA[k][k]*matrixA[i][k];
+				pivo1 = matrixA[k][k];
+				pivo2 = matrixA[i][k];
+				for(int j = 0;j <= n;j++){
+					if(pivo1*pivo2 == 0){
+						MessageBox::Show(
+						 "0 no pivo", 
+						 "Fudeu!", MessageBoxButtons::OK);
+						return NULL;
+					}
+					if(j == 0)
+						matrixA[i][j] = 0;
+					else{
+						if(isSum < 0)
+							matrixA[i][j] = matrixA[k][j]*pivo2 + matrixA[i][j]*pivo1;
+						else
+							matrixA[i][j] = matrixA[k][j]*pivo2 - matrixA[i][j]*pivo1;
+					}
+				}
+			}
+		}
+
+		for(int i =0;i < n;i ++){
+			for(int j =0;j < n;j ++){
+				this->boxElements[i,j]->Text = System::Convert::ToString(matrixA[i][j]);
+			}	
+		}
+		for(int i = 0;i < n;i ++){
+			this->boxResultElements[i]->Text = System::Convert::ToString(matrixA[i][n]);
+		}
+		return matrixA;
+	}
+
+	int upper_triangular(Double **m, int n){
+		int i,j;
+		//check up for a triangular superior matrix
+		for(i = 1;i < n;i ++){
+			for(j = 0;j < i-1;j++){
+				if(m[i][j] != 0)
+					return 0;
+			}
+		}
+		return 1;
+	}
+
+	int lower_triangular(Double **m, int n){
+		int i,j;
+		for(i = 0;i < n-1;i++){
+			for(j = i+1;j < n;j ++){
+				if(m[i][j] != 0)
+					return 0;
+			}
+
+		}
+		return 1;
+	}
+
+	int checkup_matrix(Double **m, int n){
+		int i;
+		for(i=0;i<n;i++){
+			if(!m[i][i])
+				return -1;
+		}
+
+		if(lower_triangular(m,n))
+			return 1;
+		else if(upper_triangular(m,n))
+			return 2;
+		else
+			return 0;
+	}
+
+	Double* upper_triangular_system(Double **m,Double *b,int n){
+		int i,j;
+		Double *x = new Double[n],aux;
 
 
-	void viadagem(){}
+		for(i = n-1;i>=0;i--){
+			aux=0;
+			for(j=i + 1;j < n;j ++){
+				aux += m[i][j] * x[j];
+			}
+			x[i] = (b[i] - aux)/m[i][i];
+		}
+		return x;
+	}
+
+	Double * lower_triangular_system(Double **m,Double *b,int n){
+		int i,j;
+		Double aux;
+		Double *x = new Double[n];
+
+		for(i=0;i<n;i++){
+			aux = 0;
+			for(j=i-1;j>=0;j--){
+				aux+= m[i][j] * x[j];
+			}
+			x[i] = (b[i] - aux) / m[i][i];
+		}
+		return x;
+
+	}
 
 	private: System::Void solveSystem(System::Object^  sender, System::EventArgs^  e) {
 		
@@ -239,43 +299,45 @@ float * lower_triangular_system(int **m,int *b,int n){
 		int widthMargin = this->numericUpDown1->Location.X;
 		int matrixSize = (int)this->numericUpDown1->Value;
 		elements = matrix_alloc(matrixSize);
-		resultElements = new int[matrixSize];
+		resultElements = new Double[matrixSize];
 
 		int space = 5;
 
-		int value;
-		int % aout = value;
-				
+		Double value;
 		for(int i = 0;i < matrixSize;i++){
 			for(int j = 0;j < matrixSize;j++){
-				Int32::TryParse(boxElements[i,j]->Text,value);
+				Double::TryParse(boxElements[i,j]->Text,value);
 				elements[i][j] = value;
 			}
 		}
 
 		for(int i = 0;i < matrixSize;i++){
-			Int32::TryParse(boxResultElements[i]->Text,value);
+			Double::TryParse(boxResultElements[i]->Text,value);
 			resultElements[i] = value;
 		}
+		
+		gaussElimination(elements,resultElements,matrixSize);
+
+		/*
 		
 		int matrixType = checkup_matrix(elements,matrixSize);
 
 		if(matrixType == 1)
-			unknowns = lower_triangular_system(elements,resultElements,matrixSize);
+			Variable = lower_triangular_system(elements,resultElements,matrixSize);
 		else if (matrixType == 2)
-			unknowns = upper_triangular_system(elements,resultElements,matrixSize);			
+			Variable = upper_triangular_system(elements,resultElements,matrixSize);			
 		else
 			MessageBox::Show(
          "Invalid matrix!! You need to insert a triangular matrix", 
 		 "Error!", MessageBoxButtons::OK);
 		if(matrixType == 1 || matrixType == 2)
 			for(int i =0;i<matrixSize;i++){
-				labelUnknowns[i]->Text = System::Convert::ToString(unknowns[i]);
-				labelUnknowns[i]->Visible = true;
+				labelVariable[i]->Text = System::Convert::ToString(Variable[i]);
+				labelVariable[i]->Visible = true;
 			}
-
+			
 		
-
+		*/
 	}
 
 	private: System::Void CreateMatrix(System::Object^  sender, System::EventArgs^  e) {
@@ -320,7 +382,7 @@ float * lower_triangular_system(int **m,int *b,int n){
 		equal->Size = System::Drawing::Size(50,50);
 		
 
-		labelUnknowns = gcnew array<Label^,1>(matrixSize);
+		labelVariable = gcnew array<Label^,1>(matrixSize);
 
 		for(int i=0;i<matrixSize;i++){
 
@@ -328,7 +390,7 @@ float * lower_triangular_system(int **m,int *b,int n){
 			a->Visible = false;
 			a->Size = System::Drawing::Size(labelWidth,labelHeight);
 			a->Location = System::Drawing::Point(boxResultElements[0]->Location.X + boxResultElements[0]->Width+5,heightMargin + labelHeight*i);
-			labelUnknowns[i] = a;
+			labelVariable[i] = a;
 			this->Controls->Add(a);
 
 		}
@@ -347,7 +409,7 @@ float * lower_triangular_system(int **m,int *b,int n){
 		this->button2->Enabled = false;
 	}
 
-	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	private: System::Void resetButton(System::Object^  sender, System::EventArgs^  e) {
 		
 		this->button2->Enabled = true;
 		this->button3->Enabled = false;
@@ -363,19 +425,14 @@ float * lower_triangular_system(int **m,int *b,int n){
 
 		for(int i=0;i<matrixSize;i++){
 			delete(boxResultElements[i]);
-			delete(labelUnknowns[i]);
+			delete(labelVariable[i]);
 		}
 
 	}
 
-
-
-
-
-
-
-
-
+	private: System::Void changeDetected(System::Object^sender,System::EventArgs^e){
+		this->numericUpDown1->Maximum = (this->Height-100)/25;
+	}
 };
 
 

@@ -21,10 +21,3 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class windowsforms.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-  Methods:
-    matrix_alloc(Int32): PrivateScope, Public, HideBySig
-    upper_triangular(Int32**, Int32): PrivateScope, Public, HideBySig
-    lower_triangular(Int32**, Int32): PrivateScope, Public, HideBySig
-    checkup_matrix(Int32**, Int32): PrivateScope, Public, HideBySig
-    upper_triangular_system(Int32**, Int32*, Int32): PrivateScope, Public, HideBySig
-    lower_triangular_system(Int32**, Int32*, Int32): PrivateScope, Public, HideBySig
