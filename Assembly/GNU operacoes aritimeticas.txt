@@ -1,0 +1,265 @@
+;Organizacao de Sistemas Digitais
+;Exemplo de operacoes aritmeticas
+
+jmp start
+ 
+;declaração das variáveis
+numeroA: ds 1;
+numeroB: ds 1;
+resultado: ds 1;
+
+;fatoracao
+fatoracao: nop
+;fatorar: call multiplicacao
+;mov c,a
+;dcr b
+;jnz fatorar
+
+fatorar: mov c,d
+call multiplicacao
+dcr d
+mov b,a
+jnz fatorar
+
+ret
+
+
+;divisao
+divisao: nop
+mov a,b
+mvi b, 00h
+dividir: sub c
+inr b
+cmp c
+jnc dividir
+
+ret
+
+;subtracao
+subtracao: nop
+mov a,b
+sub c
+ret
+
+;multiplicacao
+multiplicacao: nop
+
+mvi a,00h
+
+multiplica: add b
+dcr c
+jnz multiplica
+ 	mov h,a
+ 
+ret
+
+;soma
+soma: nop 
+
+;faz a soma
+mvi a,00h
+add b
+add c
+
+ret
+
+;programa principal
+start: nop
+
+in 00h 
+;mvi a,05h
+sta numeroA
+
+in 01h
+;mvi a,06h
+sta numeroB
+
+;prepara valores soma
+mvi a,00h
+sta resultado
+ 
+lda numeroA
+mov b,a
+lda numeroB
+mov c,a
+ 
+
+call soma
+
+out 02h
+sta 000Ah
+
+;prepara valores multiplicacao
+mvi a,00h
+sta resultado
+ 
+lda numeroA
+mov b,a
+lda numeroB
+mov c,a
+
+
+call multiplicacao
+
+
+out 03h
+sta 000Bh
+
+;prepara subtracao
+
+mvi a,00h
+
+lda numeroA
+mov b,a
+lda numeroB
+mov c,a
+
+
+call subtracao
+
+out 04h
+
+;prepara divisao
+
+mvi a,00h
+
+lda numeroA
+mov b,a
+lda numeroB
+mov c,a
+
+call divisao
+
+out 05h
+mov a,b
+out 06h
+
+;prepara fatoracao
+;mvi c, 01h
+;lda numeroA
+;mov b,a
+;mvi a, 00h
+
+lda numeroA
+mov b,a
+mvi a,00h
+mov d,b
+dcr d
+
+call fatoracao
+
+out 07h
+
+hlt
+
+jmp start
+ 
+;declaração das variáveis
+numeroAp1: ds 1;
+numeroAp2: ds 1;
+numeroBp1: ds 1;
+numeroBp2: ds 1;
+resultadop1: ds 1;
+resultadop2: ds 1;
+
+
+;somap1
+somap1: nop 
+
+pop d
+pop b
+
+;faz a soma
+mvi a,0h
+add b
+add c
+
+mov h,a
+
+push h
+push d
+
+ret
+
+
+;somap2
+somap2: nop 
+
+pop d
+pop b
+
+;faz a soma com carry
+mvi a,0h
+mov a,b
+adc c
+
+mov h,a
+
+push h
+push d
+
+ret
+
+
+
+
+;programa principal
+start: nop
+
+in 00h 
+;mvi a,05h
+sta numeroAp1
+
+in 01h
+;mvi a,06h
+sta numeroAp2
+
+in 02h 
+;mvi a,05h
+sta numeroBp1
+
+in 03h
+;mvi a,06h
+sta numeroBp2
+
+;prepara valores somap1
+mvi a,00h
+sta resultadop1
+ 
+lda numeroAp1
+mov b,a
+lda numeroBp1
+mov c,a
+ 
+push b
+
+call somap1
+
+pop b
+mov a,b
+sta resultadop1
+out 04h
+sta 000Ah
+
+
+;prepara valores somap2
+mvi a,00h
+sta resultadop2
+ 
+lda numeroAp2
+mov b,a
+lda numeroBp2
+mov c,a
+ 
+push b
+
+call somap2
+
+pop b
+mov a,b
+sta resultadop2
+out 05h
+sta 000Bh
+
+
+hlt

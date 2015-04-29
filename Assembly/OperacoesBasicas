@@ -1,0 +1,116 @@
+
+;<Program title>
+
+jmp start
+
+;data
+numeroA: ds 1;
+numeroB: ds 1;
+resultado: ds 1;
+resto: ds 1;
+
+;soma
+soma: add b
+ret
+
+;subtracao
+subtracao: sub b
+ret
+
+;multiplicacao
+multiplicacao: mvi a,00h
+multiplica: add b
+dcr c
+jnz multiplica
+ret
+
+;divisao
+divisao: mvi b,00h
+divide: sub c
+cmp c
+inr b
+jnc divide
+ret
+
+;code
+start: nop
+
+;prepara para soma
+
+in 01h
+sta numeroA
+mov b,a;
+
+in 02h
+sta numeroB
+
+call soma
+
+sta resultado
+
+out 05h
+sta 000Ah
+
+;prepara para subtracao
+
+in 02h
+sta numeroB
+mov b,a
+
+in 01h
+sta numeroA
+
+call subtracao
+
+sta resultado
+
+out 06h
+
+;prepara para multiplicacao
+in 01h
+sta numeroA
+mov b,a
+
+in 02h
+sta numeroB
+mov c,a
+
+call multiplicacao
+sta resultado
+
+out 07h
+
+;prepara para subtracao
+
+in 02h
+sta numeroB
+mov c,a
+
+in 01h
+sta numeroA
+
+call divisao
+sta resto
+out 08h
+
+mov a,b
+sta resultado
+out 09h
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hlt

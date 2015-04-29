@@ -1,13 +1,23 @@
-﻿Build started 06/04/2015 15:09:45.
-     1>Project "C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\SplineCubico\SplineCubico.vcxproj" on node 2 (Build target(s)).
+﻿Build started 4/28/2015 8:15:24 AM.
+     1>Project "C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\SplineCubico\SplineCubico.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Visual Studio\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ID:\opencv\build\include /ID:\opencv\build\include\opencv /ID:\opencv\build\include\opencv2 /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
          Main.cpp
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(43): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(48): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(52): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(55): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(105): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\helder\documents\github\projects\splinecubico\splinecubico\main.cpp(108): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
        Link:
-         D:\Visual Studio\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\Debug\SplineCubico.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\Debug\SplineCubico.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\Debug\SplineCubico.lib" /MACHINE:X86 Debug\Main.obj
-         SplineCubico.vcxproj -> C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\Debug\SplineCubico.exe
-     1>Done Building Project "C:\Users\Helder\Documents\Visual Studio 2012\Projects\SplineCubico\SplineCubico\SplineCubico.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\Debug\SplineCubico.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\opencv\build\x86\vc11\lib /LIBPATH:D:\opencv\build\x86\vc11\staticlib opencv_calib3d249d.lib opencv_contrib249d.lib opencv_core249d.lib opencv_features2d249d.lib opencv_flann249d.lib opencv_gpu249d.lib opencv_highgui249d.lib opencv_imgproc249d.lib opencv_legacy249d.lib opencv_ml249d.lib opencv_nonfree249d.lib opencv_objdetect249d.lib opencv_ocl249d.lib opencv_photo249d.lib opencv_stitching249d.lib opencv_superres249d.lib opencv_video249d.lib opencv_videostab249d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\Debug\SplineCubico.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\Debug\SplineCubico.lib" /MACHINE:X86 Debug\Main.obj
+         SplineCubico.vcxproj -> C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\Debug\SplineCubico.exe
+     1>Done Building Project "C:\Users\Helder\Documents\GitHub\Projects\SplineCubico\SplineCubico\SplineCubico.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:04.77
+Time Elapsed 00:00:01.90
