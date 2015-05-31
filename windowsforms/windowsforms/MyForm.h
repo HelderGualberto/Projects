@@ -1,6 +1,7 @@
 #pragma once
 #include <stdlib.h>
 #include <ostream>
+#include <iostream>
 
 namespace windowsforms {
 
@@ -195,7 +196,10 @@ using namespace System::Drawing;
 		for(int i = 0;i < n;i++){
 			for(int j = 0;j < n;j++){
 				matrixA[i][j] = m[i][j];
+				std::cout << matrixA[i][j] << " ";
 			}
+			std::cout << std::endl;
+
 		}
 	
 		for(int i = 0;i < n;i++){
@@ -213,7 +217,7 @@ using namespace System::Drawing;
 				for(int j = k;j <= n;j++){
 					if(mainPivo == 0){
 						if(!changeRows(k,matrixA,n)){
-							nullCollum = 1;
+							//nullCollum = 1;
 							break;
 						}
 						mainPivo = matrixA[k][k];
@@ -375,9 +379,9 @@ using namespace System::Drawing;
 		for(int i = 0;i < matrixSize;i ++){
 			this->boxResultElements[i]->Text = System::Convert::ToString(matrixA[i][matrixSize]);
 		}
-
+		
 		st = SPIorSI(matrixA,matrixSize);
-
+		st = 0;
 		if(st == 0){
 	
 			for(int i=0;i < matrixSize; i++){
@@ -399,6 +403,8 @@ using namespace System::Drawing;
 			 "Error!", MessageBoxButtons::OK);
 			if(matrixType == 1 || matrixType == 2)
 				for(int i =0;i<matrixSize;i++){
+					std::cout << Variable[i] << std::endl;
+
 					labelVariable[i]->Text = System::Convert::ToString(Variable[i]);
 					labelVariable[i]->Visible = true;
 			}
@@ -411,6 +417,10 @@ using namespace System::Drawing;
 			MessageBox::Show(
 			 "System SPI", 
 			 "Error!", MessageBoxButtons::OK);
+
+		//for(int i = 0; i< matrixSize; i++)
+		//	delete(matrixA[i]);
+		//delete(matrixA);
 
 	}
 

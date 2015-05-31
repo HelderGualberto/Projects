@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1432039672 source:c:\users\helder\documents\github\projects\equaçãocalor\main.cpp
+	<iostream>
+	<math.h>
+

@@ -4,10 +4,9 @@
 #include <fstream>
 
 using namespace cv;
-using namespace std;
 
-void drawPoints(Mat *img,int x,int y){
-	line(*img,Point(x,y),Point(x,y),Scalar(255,0,0),2,8);
+void drawPoints(Mat *img,int x,int y,Scalar color){
+	line(*img,Point(x,y),Point(x,y),color,2,8);
 }
 
 double exp(double x,int e){
@@ -20,12 +19,12 @@ double exp(double x,int e){
 
 int main(){
 	double *x;
-	double *a,*h,*b,*c,*d,*u,*z,*y,*l;
+	double *a,*h,*b,*c,*d,*u,*z,*y,*l; // a = f(x)
 	int n;
 	
-	cout << "Insert the number of points" << endl;
+	std::cout << "Insert the number of points" << std::endl;
 
-	cin >> n;
+	std::cin >> n;
 
 	x = new double[n];
 	a = new double[n];
@@ -44,6 +43,7 @@ int main(){
 
 //	cout << "Insert X values and press enter" <<endl;
 
+	// x values
 	for(int i = 0;i < n;i ++){
 		fscanf(file,"%lf",&x[i]);
 	}
@@ -51,8 +51,15 @@ int main(){
 
 	file = fopen("C:\\Users\\Helder\\Documents\\GitHub\\Projects\\SplineCubico\\fx.txt","r");
 
+	fclose(file);
+
+	//f(x) values
+	int yMax = 0;
 	for(int i = 0;i < n;i ++){
 		fscanf(file,"%lf",&a[i]);
+		if(a[i] > yMax){
+			yMax = a[i];
+		}
 	}
 	fclose(file);
 	n--;
@@ -81,22 +88,48 @@ int main(){
 	}
 
 	for(int i = 0;i < n;i++){
-		cout << "a" << i << "="<< a[i] << " b" << i << "="<< b[i] 
-		<< " c" << i << "="<< c[i] << " d" << i << "="<< d[i] <<endl;
+		std::cout << "a" << i << "="<< a[i] << " b" << i << "="<< b[i] 
+		<< " c" << i << "="<< c[i] << " d" << i << "="<< d[i] << std::endl;
 	}
+	int width = 600;
+	int height = 600;
+	double xMax = x[n], xMin = x[0];
+	int xScale = width/xMax;
+	int yScale = height/yMax;
+	double resolution = 0;
+	double x1;
+	int sample = 50;
+	float fx;
+	
+	Mat img = Mat::zeros(height,width,CV_8UC3);
+
+	for(int i = 0; i < n; i++){
+		resolution = (x[i+1] - x[i])/sample;
 
 
-	Mat img = Mat::zeros(600,600,CV_8UC3);
-	double x1;int j = 0, k = 0;
-	float f;
+		for(int k = 0; k< n; k++)
+			for(int j = 1; j <= sample;j++){
+				x1 = x[i] + j*resolution;
+				fx = a[k] + b[k]*(x1 - x[k]) + c[k]*exp((x1-x[k]),2) + d[k]*exp((x1-x[k]),3);
+				drawPoints(&img,x1*xScale + j*resolution,500 - fx*yScale,Scalar(k*k,k*10,255));
+			}
+
+	}
+	
 	
 	for(int i=0;i < n;i ++){
+		resolution = (x[i+1] - x[i])/sample;
 
-		f = a[k] + b[k]*x1 + c[k]*exp(x1,2) + d[k]*exp(x1,3);
-
-		drawPoints(&img,i,500 - f);
+		for(int j = 1; j <= sample;j++){
+			x1 = x[i] + j*resolution;
+			fx = a[i] + b[i]*(x1 - x[i]) + c[i]*exp((x1 - x[i]),2) + d[i]*exp((x1 - x[i]),3);
+			drawPoints(&img,x1*xScale + j*resolution,500 - fx*yScale,Scalar(255,0,0));
+		}
+		//topa calaes 60
 	}
-	imshow("teste",img);
+	
+	
+	imshow("Interpolação",img);
 	waitKey(0);
 	
 
