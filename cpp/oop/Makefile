@@ -1,7 +1,7 @@
 #Compiler thats being used
 CC = g++
 
-CFLAGS = -I. --std=c++11
+CFLAGS = -I. --std=c++11 -fopenmp
 
 DEPS = physics_vector.hpp
 
@@ -13,3 +13,6 @@ OBJ = main.o physics_vector.o
 
 exec: $(OBJ)
 	$(CC) -o $@ $^ $(CFALGS)
+
+clean:
+	rm *.o
